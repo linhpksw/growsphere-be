@@ -1,0 +1,17 @@
+docker-compose down
+docker rmi #
+docker pull linhpksw/growsphere-app:latest
+
+Remember to change from .env
+docker-compose up -d
+
+docker logs -f growsphere_app
+
+sudo ufw allow 5000/tcp
+
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/linhpksw/<your-repo>.git
+git branch -M main
+git push -u origin main

@@ -1,0 +1,45 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: growsphere_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - growsphere_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - growsphere_network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  app:
+    build: .
+    # image: linhpksw/growsphere-app:latest
+    container_name: growsphere_app
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      - DB_URL=${DB_URL}
+      - NODE_ENV=production
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - growsphere_network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+networks:
+  growsphere_network:
+
+volumes:
+  growsphere_data:
