@@ -8,6 +8,7 @@ import PaymentRoute from './app/modules/payment/payment.route';
 import paymentSuccess from './app/modules/OrderProduct/orderSuccess.route';
 import blogRoute from './app/modules/blog/blog.route';
 import teamRoute from './app/modules/team/team.route';
+import OrderSuccessRoute from './app/modules/OrderProduct/orderSuccess.route';
 const app: Application = express();
 
 app.use(
@@ -17,8 +18,8 @@ app.use(
             if (!incomingOrigin) return callback(null, true);
 
             // 2) Whitelist your two domains:
-            const allowed = ['https://growsphere.space', 'https://www.growsphere.space'];
-            // const allowed = ['http://localhost:3000'];
+            // const allowed = ['https://growsphere.space', 'https://www.growsphere.space'];
+            const allowed = ['http://localhost:3000'];
             if (allowed.includes(incomingOrigin)) {
                 return callback(null, true);
             }
@@ -44,9 +45,11 @@ app.use('/user', UserRouter);
 app.use('/setting', SettingsRouter);
 app.use('/product', productRoute);
 app.use('/user-input', userInputRoute);
-app.use('/payment', PaymentRoute);
 app.use('/success', paymentSuccess);
 app.use('/blog', blogRoute);
 app.use('/team', teamRoute);
+
+app.use('/payments', PaymentRoute);
+app.use('/orders', OrderSuccessRoute);
 
 export default app;

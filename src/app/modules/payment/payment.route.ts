@@ -1,12 +1,17 @@
-import verifyToken from '../../../middleware/userVerify';
-import { CreatePaymentIntent } from './payment.controller';
+import express from 'express';
+import { createPreOrder, getPreOrderStatus, handleWebhook } from './payment.controller';
 
-import express from "express";
+const router = express.Router();
 
+// 1) POST /payments/preorder
+router.post('/preorder', createPreOrder);
 
-const PaymentRoute = express.Router();
-// all Routes
-PaymentRoute.post("/payment-intent", verifyToken, CreatePaymentIntent);
+// 2) GET /payments/status?code=XXXXXX
+router.get('/status', getPreOrderStatus);
 
+// 3) POST /payments/webhook
+//    (public URL that Casso or Postman can call to simulate a payment)
+//    You do NOT need any authentication here (for testing).
+router.post('/webhook', handleWebhook);
 
-export default PaymentRoute;
+export default router;
